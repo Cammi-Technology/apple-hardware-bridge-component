@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Device information</title>
+  <link rel="stylesheet" href="app.css?v=af04cb0d59">
+  <script type="module" src="app.js?v=af04cb0d59"></script>
+</head>
+
+<body data-controller="bridge--device"
+      class="group/device min-h-screen bg-stone-100 dark:bg-stone-900 native:bg-transparent safe-padding font-sans text-stone-900 dark:text-stone-100">
+
+  <header class="mb-4 duo-left-page">
+    <!-- The navigation bar shows the title in the app. -->
+    <h1 class="text-2xl font-bold native:sr-only">Device information</h1>
+    <p class="mt-1 max-w-prose text-pretty">The app sends the hardware model and its marketing name. It never sends the name the owner gave the device.</p>
+  </header>
+
+  <!-- In the app: a native share button in the navigation bar. -->
+  <div hidden data-controller="bridge--share"></div>
+
+  <main class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] duo-spread">
+    <section aria-labelledby="live-title" class="duo-right-page rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700" data-controller="live"
+             data-action="bridge--device:change@window->live#render">
+      <h2 id="live-title" class="text-lg font-semibold">Live values</h2>
+      <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+        <dt>Name</dt><dd data-live-target="value" data-attr="deviceName">-</dd>
+        <dt>Model</dt><dd data-live-target="value" data-attr="deviceModel">-</dd>
+        <dt>Idiom</dt><dd data-live-target="value" data-attr="deviceIdiom">-</dd>
+        <dt>Display</dt><dd data-live-target="value" data-attr="deviceDisplay">-</dd>
+        <dt>Screen</dt><dd data-live-target="value" data-size="--device">-</dd>
+        <dt>Orientation</dt><dd data-live-target="value" data-attr="deviceOrientation">-</dd>
+        <dt>Width class</dt><dd data-live-target="value" data-attr="deviceSizeH">-</dd>
+        <dt>Height class</dt><dd data-live-target="value" data-attr="deviceSizeV">-</dd>
+      </dl>
+    </section>
+    <section aria-labelledby="code-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="code-title" class="text-lg font-semibold">Use it</h2>
+      <pre tabindex="0" aria-label="Example code" class="mt-2 overflow-x-auto text-xs leading-5 focus-visible:outline-2"><code>&lt;p class="hidden device-ipad:block"&gt;
+  Shown on iPad only
+&lt;/p&gt;
+
+body[data-device-name="iPhone Duo"] { … }</code></pre>
+    </section>
+  
+    <section aria-labelledby="components-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="components-title" class="text-lg font-semibold">Components</h2>
+      <dl class="mt-2 divide-y divide-stone-200 dark:divide-stone-700"
+          data-controller="components" data-components-feature-value="device" data-components-layout-value="table"></dl>
+      <p class="mt-2 text-sm"><a class="underline" href="https://github.com/Cammi-Technology/apple-hardware-bridge-component/blob/main/docs/ios-terms.md">All of Apple's names</a></p>
+    </section>
+  </main>
+</body>
+</html>

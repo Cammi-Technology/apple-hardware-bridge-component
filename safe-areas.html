@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Safe areas</title>
+  <link rel="stylesheet" href="app.css?v=af04cb0d59">
+  <script type="module" src="app.js?v=af04cb0d59"></script>
+</head>
+
+<body data-controller="bridge--device"
+      class="group/device min-h-screen bg-stone-100 dark:bg-stone-900 native:bg-transparent safe-padding font-sans text-stone-900 dark:text-stone-100">
+
+  <header class="mb-4 duo-left-page">
+    <!-- The navigation bar shows the title in the app. -->
+    <h1 class="text-2xl font-bold native:sr-only">Safe areas</h1>
+    <p class="mt-1 max-w-prose text-pretty">The app sends its safe area, so the page can keep clear of the status bar, the Dynamic Island and the home indicator.</p>
+    <!-- Red outlines over every area the layout keeps clear of. -->
+    <div data-controller="outlines" data-outlines-on-value="true" class="mt-3">
+      <button type="button" role="switch" aria-checked="true" data-outlines-target="switch" data-action="outlines#toggle"
+              class="group inline-flex min-h-11 items-center gap-3 rounded-full px-1 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:focus-visible:outline-red-300">
+        <span class="relative h-6 w-10 shrink-0 rounded-full bg-stone-300 motion-safe:transition-colors group-aria-checked:bg-red-700 dark:bg-stone-600 dark:group-aria-checked:bg-red-400">
+          <span class="absolute start-0.5 top-0.5 size-5 rounded-full bg-white shadow motion-safe:transition-transform group-aria-checked:translate-x-4 rtl:group-aria-checked:-translate-x-4"></span>
+        </span>
+        Show outlines
+      </button>
+    </div>
+  </header>
+
+  <!-- In the app: a native share button in the navigation bar. -->
+  <div hidden data-controller="bridge--share"></div>
+
+  <main class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] duo-spread">
+    <section aria-labelledby="live-title" class="duo-right-page rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700" data-controller="live"
+             data-action="bridge--device:change@window->live#render">
+      <h2 id="live-title" class="text-lg font-semibold">Live values</h2>
+      <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+        <dt>Top</dt><dd data-live-target="value" data-var="--device-safe-top">-</dd>
+        <dt>Right</dt><dd data-live-target="value" data-var="--device-safe-right">-</dd>
+        <dt>Bottom</dt><dd data-live-target="value" data-var="--device-safe-bottom">-</dd>
+        <dt>Left</dt><dd data-live-target="value" data-var="--device-safe-left">-</dd>
+        <dt>Covered regions</dt><dd data-live-target="value" data-attr="deviceOcclusions">-</dd>
+      </dl>
+    </section>
+    <!-- The app's safe area next to what WebKit gives CSS, and what the
+         page ends up using. They can differ: env() can read 0 in the
+         app's web view. -->
+    <section aria-labelledby="compare-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700" data-controller="live"
+             data-action="bridge--device:change@window->live#render">
+      <h2 id="compare-title" class="text-lg font-semibold">App, CSS and page</h2>
+      <dl class="mt-2 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
+        <dt>From the app</dt><dd data-live-target="value" data-sides="--device-safe">-</dd>
+        <dt>CSS env()</dt><dd data-live-target="value" data-sides="env">-</dd>
+        <dt>Page padding</dt><dd data-live-target="value" data-sides="padding">-</dd>
+      </dl>
+      <p class="mt-2 text-xs text-stone-600 dark:text-stone-300">Top, right, bottom, left. The page padding is the largest of the other two, plus a 16px gap.</p>
+    </section>
+    <section aria-labelledby="code-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="code-title" class="text-lg font-semibold">Use it</h2>
+      <pre tabindex="0" aria-label="Example code" class="mt-2 overflow-x-auto text-xs leading-5 focus-visible:outline-2"><code>&lt;body class="safe-padding"&gt;</code></pre>
+    </section>
+  
+    <section aria-labelledby="components-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="components-title" class="text-lg font-semibold">Components</h2>
+      <dl class="mt-2 divide-y divide-stone-200 dark:divide-stone-700"
+          data-controller="components" data-components-feature-value="safe-areas" data-components-layout-value="table"></dl>
+      <p class="mt-2 text-sm"><a class="underline" href="https://github.com/Cammi-Technology/apple-hardware-bridge-component/blob/main/docs/ios-terms.md">All of Apple's names</a></p>
+    </section>
+  </main>
+</body>
+</html>
