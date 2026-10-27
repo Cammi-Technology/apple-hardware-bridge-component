@@ -1,0 +1,42 @@
+{
+  "name": "@cammi-technology/apple-hardware-bridge-component",
+  "version": "0.2.0",
+  "description": "A Hotwire Native bridge component for Apple hardware: it tells web pages about the iPhone Duo's screens, hinge and posture, the safe area and the Dynamic Island, with a Stimulus controller and Tailwind variants.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cammi-Technology/apple-hardware-bridge-component.git"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "./web/controllers/*.js",
+    "./web/css/*.css"
+  ],
+  "main": "./web/controllers/index.js",
+  "module": "./web/controllers/index.js",
+  "exports": {
+    ".": "./web/controllers/index.js",
+    "./css/duo.css": "./web/css/duo.css",
+    "./css/duo-tailwind.css": "./web/css/duo-tailwind.css"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": ">=3.2.0",
+    "@hotwired/hotwire-native-bridge": ">=1.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node --test web/test/*.test.js examples/web/test/*.test.js"
+  },
+  "keywords": [
+    "hotwire-native",
+    "hotwire",
+    "bridge-component",
+    "stimulus",
+    "tailwindcss",
+    "ios",
+    "iphone-duo"
+  ]
+}

@@ -1,0 +1,202 @@
+@import "tailwindcss";
+@import "@cammi-technology/apple-hardware-bridge-component/css/duo-tailwind.css";
+@source "../public/*.html";
+@source "./*.js";
+
+/* In the app, the native controls replace their HTML versions. */
+[data-bridge-components~="menu"] [data-controller~="bridge--menu"],
+[data-bridge-components~="add-button"] [data-controller~="bridge--add-button"] {
+  display: none;
+}
+
+/* Leave room at the bottom for the native add button. */
+body[data-add-button] {
+  padding-bottom: 6rem;
+}
+
+/* Follow the phone's text size setting (Dynamic Type). WebKit sizes
+   -apple-system-body from it, and every rem size in the page follows.
+   Other browsers ignore it and keep their default. */
+@layer base {
+  html {
+    font: -apple-system-body;
+    line-height: 1.5;
+  }
+}
+
+/* Grid items default to min-width: auto, so one long word or code name
+   can push a card wider than its column, and the page sideways. Let
+   them shrink, and let long words break. */
+@layer base {
+  .grid > * {
+    min-width: 0;
+  }
+  body {
+    overflow-wrap: break-word;
+  }
+}
+
+/* The device icon on the Posture page (device_pose.js). The phone turns
+   by --pose-rotate, and data-shape folds its two halves around the
+   hinge. Only transform and opacity animate, with a gentle overshoot. */
+.device-icon {
+  --pose-shift: 0px;
+}
+.device-icon__device {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transform: translate(100px, 78px) scale(1.3) rotate(var(--pose-rotate, 0deg)) translateX(var(--pose-shift));
+}
+.device-icon__half {
+  transform-box: fill-box;
+}
+.device-icon__half--left {
+  transform-origin: right center;
+}
+.device-icon__half--right {
+  transform-origin: left center;
+}
+.device-icon__device,
+.device-icon__half {
+  transition: transform var(--duo-move-duration) var(--duo-move-ease), opacity 300ms ease;
+}
+.device-icon__camera,
+.device-icon__island,
+.device-icon__crease {
+  transition: opacity 300ms ease;
+}
+.device-icon__island,
+.device-icon[data-shape="closed"] .device-icon__camera,
+.device-icon[data-shape="tent"] .device-icon__camera,
+.device-icon[data-shape="closed"] .device-icon__crease,
+.device-icon[data-shape="tent"] .device-icon__crease {
+  opacity: 0;
+}
+.device-icon[data-shape="closed"] .device-icon__island,
+.device-icon[data-shape="tent"] .device-icon__island {
+  opacity: 1;
+}
+
+/* Closed: the left half folds away behind the cover screen. */
+.device-icon[data-shape="closed"],
+.device-icon[data-shape="tent"] {
+  --pose-shift: -22px;
+}
+.device-icon[data-shape="closed"] .device-icon__half--left {
+  transform: scaleX(0.04);
+  opacity: 0;
+}
+/* Tent: the other half peeks out from behind, at an angle. */
+.device-icon[data-shape="tent"] .device-icon__half--left {
+  transform: scaleX(-0.6) skewY(-16deg);
+  opacity: 0.5;
+}
+.device-icon[data-shape="tent"] .device-icon__half--right {
+  transform: skewY(8deg) scaleX(0.94);
+}
+/* Book: the two pages lean in towards the fold. */
+.device-icon[data-shape="book"] .device-icon__half--left {
+  transform: skewY(9deg) scaleX(0.9);
+}
+.device-icon[data-shape="book"] .device-icon__half--right {
+  transform: skewY(-9deg) scaleX(0.9);
+}
+/* Laptop: the lid leans back, the base lies flat. */
+.device-icon[data-shape="laptop"] .device-icon__half--left {
+  transform: scaleX(0.8);
+}
+.device-icon[data-shape="laptop"] .device-icon__half--right {
+  transform: scaleX(0.5) skewY(-8deg);
+}
+
+.device-icon.is-still *,
+.device-icon.is-still {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .device-icon * {
+    transition: none !important;
+  }
+}
+
+/* Outlines over every area the layout keeps clear of (outlines.js).
+   Fixed over the whole screen, no taps, placed by the same variables
+   the layout uses. Dashed red; the fold gap lighter. */
+.outline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+.outline-box {
+  position: fixed;
+  border: 2px dashed var(--color-red-600);
+  border-radius: 0.5rem;
+}
+.outline-box--safe {
+  top: var(--device-safe-top, 0px);
+  right: var(--device-safe-right, 0px);
+  bottom: var(--device-safe-bottom, 0px);
+  left: var(--device-safe-left, 0px);
+}
+.outline-box--covered {
+  left: var(--box-x);
+  top: var(--box-y);
+  width: var(--box-width);
+  height: var(--box-height);
+}
+.outline-box--fold {
+  top: 0;
+  bottom: 0;
+  left: var(--device-fold-x, 50%);
+  width: var(--device-fold-width, 0px);
+  border-radius: 0;
+}
+.outline-box--gap {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--duo-fold-centre, 50%) - var(--duo-book-gap, 0px) / 2);
+  width: var(--duo-book-gap, 0px);
+  border-color: color-mix(in srgb, var(--color-red-600) 45%, transparent);
+  border-radius: 0;
+}
+.outline-box__label {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  padding: 0 0.3rem;
+  border-radius: 0.25rem;
+  background: var(--color-white);
+  color: var(--color-red-700);
+  font: 600 0.7rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: nowrap;
+}
+.outline-box--fold .outline-box__label,
+.outline-box--gap .outline-box__label {
+  top: 50%;
+}
+.outline-box--gap .outline-box__label {
+  top: calc(50% + 1.5rem);
+}
+@media (prefers-color-scheme: dark) {
+  .outline-box {
+    border-color: var(--color-red-400);
+  }
+  .outline-box--gap {
+    border-color: color-mix(in srgb, var(--color-red-400) 45%, transparent);
+  }
+  .outline-box__label {
+    background: var(--color-stone-900);
+    color: var(--color-red-300);
+  }
+}
+/* Covered regions can be narrow: keep their caption inside the box. */
+.outline-box--covered .outline-box__label {
+  left: 0.15rem;
+  right: 0.15rem;
+  padding: 0 0.15rem;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: normal;
+  font-size: 0.6rem;
+}

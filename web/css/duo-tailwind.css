@@ -1,0 +1,182 @@
+/* Tailwind CSS v4 variants for the iPhone Duo.
+   Import after `@import "tailwindcss";` */
+@variant duo-inner (body[data-device-display="inner"] &);
+@variant duo-outer (body[data-device-display="outer"] &);
+@variant duo-book (body[data-device-posture="book"] &);
+@variant duo-laptop (body[data-device-posture="laptop"] &);
+@variant duo-open (body[data-device-posture="open"] &);
+@variant duo-landscape (body:is([data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) &);
+/* The inner screen held upright, taller than it is wide. Variants do
+   not stack on the body, so this one is both in one. */
+@variant duo-inner-portrait (body[data-device-display="inner"]:is([data-device-orientation="portrait"], [data-device-orientation="portrait-upside-down"]) &);
+/* Inside the native app. hotwire-native-bridge sets data-bridge-platform
+   on <html>. Use it to hide what the app already shows, such as a page
+   heading the navigation bar repeats: native:hidden. */
+@variant native (html[data-bridge-platform] &);
+@variant duo-native (html[data-bridge-platform] &); /* older name for native */
+
+/* Padding that keeps content clear of the status bar, the Dynamic Island,
+   the rounded corners and the native bars: the navigation bar, the tab
+   bar and the iPad sidebar. It needs viewport-fit=cover in the viewport
+   meta tag. Each side is the largest of the CSS safe area, the native
+   safe area and the covered regions (the Dynamic Island and Live
+   Activities), plus a 16px gap, like UIKit's layout margins, so content
+   never touches a bar. Set --safe-padding-gap to change the gap. It is
+   in px, so large text sizes do not widen the margins. */
+@utility safe-padding {
+  --duo-pad-top: calc(max(env(safe-area-inset-top), var(--device-safe-top, 0px), var(--device-occlusion-top, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-right: calc(max(env(safe-area-inset-right), var(--device-safe-right, 0px), var(--device-occlusion-right, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-bottom: calc(max(env(safe-area-inset-bottom), var(--device-safe-bottom, 0px), var(--device-occlusion-bottom, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-left: calc(max(env(safe-area-inset-left), var(--device-safe-left, 0px), var(--device-occlusion-left, 0px)) + var(--safe-padding-gap, 16px));
+  padding: var(--duo-pad-top) var(--duo-pad-right) var(--duo-pad-bottom) var(--duo-pad-left);
+  /* The height of the screen inside the safe area. */
+  --duo-safe-height: calc(100svh - var(--duo-pad-top) - var(--duo-pad-bottom));
+}
+
+/* Older name for safe-padding. */
+@utility duo-safe-padding {
+  --duo-pad-top: calc(max(env(safe-area-inset-top), var(--device-safe-top, 0px), var(--device-occlusion-top, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-right: calc(max(env(safe-area-inset-right), var(--device-safe-right, 0px), var(--device-occlusion-right, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-bottom: calc(max(env(safe-area-inset-bottom), var(--device-safe-bottom, 0px), var(--device-occlusion-bottom, 0px)) + var(--safe-padding-gap, 16px));
+  --duo-pad-left: calc(max(env(safe-area-inset-left), var(--device-safe-left, 0px), var(--device-occlusion-left, 0px)) + var(--safe-padding-gap, 16px));
+  padding: var(--duo-pad-top) var(--duo-pad-right) var(--duo-pad-bottom) var(--duo-pad-left);
+  /* The height of the screen inside the safe area. */
+  --duo-safe-height: calc(100svh - var(--duo-pad-top) - var(--duo-pad-bottom));
+}
+
+/* The inner screen held sideways, open flat or in book mode: the page
+   is a two-page spread, with the fold in the gap between the pages.
+   Flat and book look the same, so opening or closing the hinge moves
+   nothing: no column, width or line changes. The gap is --duo-book-gap: the fold's width
+   plus 0.75rem each side, and at least 4.5rem. It sits on the fold
+   itself, from the app's --device-fold-x, so it stays on the crease
+   even when the side column makes one margin wider than the other.
+
+     duo-spread      on a grid or any block: two columns in book mode,
+                     one either side of the fold
+     duo-left-page   on something that spans the page, such as a
+                     header or a footer: the left page only, in book mode
+
+   Anywhere else both do nothing. */
+@layer base {
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) {
+    --duo-book-gap: max(calc(var(--device-fold-width, 0px) + 1.5rem), var(--duo-book-gap-floor, 4.5rem));
+    --duo-fold-centre: calc(var(--device-fold-x, calc(50vw - var(--device-fold-width, 0px) / 2)) + var(--device-fold-width, 0px) / 2);
+    --duo-left-page: calc(var(--duo-fold-centre) - var(--duo-book-gap) / 2 - var(--duo-pad-left, 0px));
+  }
+}
+
+@layer base {
+  /* No fold frame from the app: the gap is centred on the screen as a
+     guess, so make it wider to be safe. */
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]):not([data-device-fold="active"], [data-device-fold="inactive"]) {
+    --duo-book-gap-floor: 6rem;
+  }
+}
+
+@utility duo-spread {
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) & {
+    display: grid;
+    grid-template-columns: var(--duo-left-page) minmax(0, 1fr);
+    column-gap: var(--duo-book-gap);
+  }
+  /* Straight on the body, the body itself is the spread: the header
+     sits on the left page, level with the top of the right page. */
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]):has(> &) {
+    display: grid;
+    grid-template-columns: var(--duo-left-page) minmax(0, 1fr);
+    column-gap: var(--duo-book-gap);
+    row-gap: 1rem;
+    align-content: start;
+    align-items: start;
+  }
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) > & {
+    display: contents;
+  }
+  /* Everything but the hero goes on the left page, one under another. */
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) > & > :not(.duo-right-page) {
+    grid-column: 1;
+  }
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]):has(> &) > :not(.duo-spread) {
+    grid-column: 1;
+  }
+  /* The cover screen: one column. The right page comes first, and
+     everything from the left page comes underneath. */
+  body[data-device-display="outer"]:has(> &) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+  }
+  body[data-device-display="outer"] > & {
+    display: contents;
+  }
+}
+
+/* The right page of the spread: the hero, what the cover screen shows
+   first. In the spread it is alone on the right page and fills it, the
+   height of the safe area, and stays in view while the left page
+   scrolls. On the cover it comes first. Add duo-hero to make it fill
+   the cover screen too. Opening the phone leaves it in place. */
+@utility duo-right-page {
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) & {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) > .duo-spread > & {
+    align-self: start;
+    position: sticky;
+    top: var(--duo-pad-top, 16px);
+    height: var(--duo-safe-height, 100svh);
+    margin-bottom: calc(-1 * var(--duo-safe-height, 100svh));
+    overflow-y: auto;
+  }
+  body[data-device-display="outer"] & {
+    order: -1;
+  }
+}
+
+@utility duo-hero {
+  body[data-device-display="outer"] & {
+    min-height: var(--duo-safe-height, 100svh);
+  }
+}
+
+@utility duo-left-page {
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]) & {
+    width: var(--duo-left-page);
+    max-width: var(--duo-left-page);
+  }
+  body[data-device-display="inner"]:not([data-device-posture="laptop"]):is([data-device-posture="book"], [data-device-orientation="landscape-left"], [data-device-orientation="landscape-right"]):has(> .duo-spread) > & {
+    grid-column: 1;
+    width: auto;
+    max-width: none;
+    margin-bottom: 0;
+  }
+  body[data-device-display="outer"]:has(> .duo-spread) > & {
+    margin-bottom: 0;
+  }
+}
+
+/* The motion language: how things move when the layout changes, the
+   same everywhere. A short pause, so the page seems to notice, then a
+   move with a gentle overshoot. Reduced motion turns it off. */
+@layer base {
+  :root {
+    --duo-move-delay: 250ms;
+    --duo-move-duration: 550ms;
+    --duo-move-ease: cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duo-move-delay: 0ms;
+      --duo-move-duration: 0ms;
+    }
+  }
+}
+
+/* Which kind of device, from data-device-idiom. Inside the app only:
+   in a browser neither matches. Use screen widths (md:, lg:) for layout,
+   and these for what differs by device, such as a hint to open the
+   phone that makes no sense on an iPad. */
+@variant device-iphone (body[data-device-idiom="phone"] &);
+@variant device-ipad (body[data-device-idiom="pad"] &);

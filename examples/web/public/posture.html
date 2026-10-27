@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Posture and hinge</title>
+  <link rel="stylesheet" href="app.css">
+  <script type="module" src="app.js"></script>
+</head>
+
+<body data-controller="bridge--device foldable"
+      data-action="bridge--device:change->foldable#render"
+      class="group/device min-h-screen bg-stone-100 dark:bg-stone-900 native:bg-transparent safe-padding font-sans text-stone-900 dark:text-stone-100">
+
+  <header class="mb-4 duo-left-page">
+    <!-- The navigation bar shows the title in the app. -->
+    <h1 class="text-2xl font-bold native:sr-only">Posture and hinge</h1>
+    <p class="mt-1 max-w-prose text-pretty">On the iPhone Duo the page knows how the phone is held. Other iPhones and iPads cannot fold, so the app hides this there.</p>
+    <!-- Red outlines over every area the layout keeps clear of. -->
+    <div data-controller="outlines" data-outlines-on-value="false" class="mt-3">
+      <button type="button" role="switch" aria-checked="false" data-outlines-target="switch" data-action="outlines#toggle"
+              class="group inline-flex min-h-11 items-center gap-3 rounded-full px-1 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:focus-visible:outline-red-300">
+        <span class="relative h-6 w-10 shrink-0 rounded-full bg-stone-300 motion-safe:transition-colors group-aria-checked:bg-red-700 dark:bg-stone-600 dark:group-aria-checked:bg-red-400">
+          <span class="absolute start-0.5 top-0.5 size-5 rounded-full bg-white shadow motion-safe:transition-transform group-aria-checked:translate-x-4 rtl:group-aria-checked:-translate-x-4"></span>
+        </span>
+        Show outlines
+      </button>
+    </div>
+  </header>
+
+  <main class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] duo-spread">
+    <!-- The phone right now: it folds and turns to match, a moment after
+         the device changes. The caption says it in words too. -->
+    <section aria-labelledby="pose-title" data-foldable-target="only" data-controller="device-icon"
+             class="duo-right-page duo-hero flex flex-col items-center rounded-2xl bg-amber-50 p-4 text-stone-900 ring-1 ring-amber-300 dark:bg-stone-800 dark:text-stone-100 dark:ring-amber-200/30">
+      <h2 id="pose-title" class="self-start text-xs font-semibold uppercase tracking-[0.2em] text-amber-900 dark:text-amber-200">Right now</h2>
+      <div class="flex flex-1 flex-col items-center justify-center">
+      <svg role="img" aria-label="iPhone Duo" data-device-icon-target="icon" data-shape="closed"
+           viewBox="0 0 200 160" class="device-icon mt-1 w-44 max-w-full overflow-visible sm:w-60">
+        <circle cx="100" cy="78" r="66" class="fill-amber-100 dark:fill-amber-200/10"/>
+        <ellipse cx="100" cy="150" rx="46" ry="5.5" class="device-icon__shadow fill-stone-900/15 dark:fill-black/40"/>
+        <g class="device-icon__device">
+        <g class="device-icon__half device-icon__half--left">
+          <rect x="-42" y="-30" width="40" height="60" rx="8" stroke-width="3.5" stroke-linejoin="round"
+                class="fill-white stroke-stone-800 dark:fill-stone-900 dark:stroke-amber-100"/>
+          <rect x="-38" y="-26" width="32" height="52" rx="5" class="fill-amber-200 dark:fill-amber-300/35"/>
+          <path d="M -33 -15 l 9 -6" stroke-width="2.5" stroke-linecap="round" class="stroke-white/80 dark:stroke-amber-50/50"/>
+        </g>
+        <g class="device-icon__half device-icon__half--right">
+          <rect x="2" y="-30" width="40" height="60" rx="8" stroke-width="3.5" stroke-linejoin="round"
+                class="fill-white stroke-stone-800 dark:fill-stone-900 dark:stroke-amber-100"/>
+          <rect x="6" y="-26" width="32" height="52" rx="5" class="fill-amber-200 dark:fill-amber-300/35"/>
+          <path d="M 11 -15 l 9 -6" stroke-width="2.5" stroke-linecap="round" class="stroke-white/80 dark:stroke-amber-50/50"/>
+          <circle cx="34" cy="-22" r="1.8" class="device-icon__camera fill-stone-800 dark:fill-amber-100"/>
+          <rect x="16" y="-24.5" width="12" height="4" rx="2" class="device-icon__island fill-stone-800 dark:fill-amber-100"/>
+        </g>
+          <line x1="0" y1="-24" x2="0" y2="24" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"
+                class="device-icon__crease stroke-amber-700 dark:stroke-amber-300"/>
+        </g>
+      </svg>
+      <p aria-live="polite" data-device-icon-target="caption" class="mt-1 font-serif text-xl italic">No device data here</p>
+      </div>
+    </section>
+    <section aria-labelledby="live-title" data-foldable-target="only" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700" data-controller="live"
+             data-action="bridge--device:change@window->live#render">
+      <h2 id="live-title" class="text-lg font-semibold">Live values</h2>
+      <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+        <dt>Posture</dt><dd data-live-target="value" data-attr="devicePosture">-</dd>
+        <dt>Foldable</dt><dd data-live-target="value" data-attr="deviceFoldable">-</dd>
+        <dt>Hinge</dt><dd data-live-target="value" data-attr="deviceHinge">-</dd>
+        <dt>Angle</dt><dd data-live-target="value" data-attr="deviceHingeAngle">-</dd>
+        <dt>Fold</dt><dd data-live-target="value" data-attr="deviceFold">-</dd>
+        <dt>Fold runs</dt><dd data-live-target="value" data-attr="deviceHingeAxis">-</dd>
+        <dt>Fold at</dt><dd data-live-target="value" data-var="--device-fold-x">-</dd>
+        <dt>Fold width</dt><dd data-live-target="value" data-var="--device-fold-width">-</dd>
+      </dl>
+    </section>
+    <section aria-labelledby="code-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="code-title" class="text-lg font-semibold">Use it</h2>
+      <pre tabindex="0" aria-label="Example code" class="mt-2 overflow-x-auto text-xs leading-5 focus-visible:outline-2"><code>&lt;header class="duo-left-page"&gt;
+&lt;main class="grid duo-inner:grid-cols-2 duo-spread"&gt;
+  &lt;section class="duo-right-page"&gt;</code></pre>
+    </section>
+  
+    <section aria-labelledby="components-title" class="rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="components-title" class="text-lg font-semibold">Components</h2>
+      <dl class="mt-2 divide-y divide-stone-200 dark:divide-stone-700"
+          data-controller="components" data-components-feature-value="posture" data-components-layout-value="table"></dl>
+      <p class="mt-2 text-sm"><a class="underline" href="https://github.com/Cammi-Technology/apple-hardware-bridge-component/blob/main/docs/ios-terms.md">All of Apple's names</a></p>
+    </section>
+  </main>
+</body>
+</html>

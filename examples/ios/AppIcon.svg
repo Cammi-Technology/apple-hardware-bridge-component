@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2B3A67"/>
+      <stop offset="1" stop-color="#1B2440"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- Two screens side by side: the iPhone Duo opened like a book -->
+  <rect x="196" y="232" width="296" height="560" rx="56" fill="#F4F1EA"/>
+  <rect x="532" y="232" width="296" height="560" rx="56" fill="#F2B84B"/>
+  <!-- Lines of text on the left page -->
+  <rect x="246" y="320" width="196" height="28" rx="14" fill="#2B3A67" opacity="0.55"/>
+  <rect x="246" y="384" width="160" height="28" rx="14" fill="#2B3A67" opacity="0.35"/>
+  <rect x="246" y="448" width="180" height="28" rx="14" fill="#2B3A67" opacity="0.35"/>
+  <!-- A dot on the right page: the cover screen content -->
+  <circle cx="680" cy="512" r="72" fill="#2B3A67"/>
+</svg>

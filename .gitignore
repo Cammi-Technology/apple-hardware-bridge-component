@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+.build/
+.swiftpm/
+xcuserdata/
+DerivedData/
+*.log
+
+# Keys and build output
+*.p8
+.env
+.env.*
+/build/
+*.ipa
+*.dSYM.zip
+vendor/bundle/

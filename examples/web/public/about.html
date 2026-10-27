@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>About</title>
+  <link rel="stylesheet" href="app.css">
+  <script type="module" src="app.js"></script>
+</head>
+
+<body data-controller="bridge--device"
+      class="group/device min-h-screen bg-stone-100 dark:bg-stone-900 native:bg-transparent safe-padding font-sans text-stone-900 dark:text-stone-100">
+
+  <header class="mb-4 duo-left-page">
+    <!-- The navigation bar shows the title in the app. -->
+    <h1 class="text-2xl font-bold native:sr-only">About</h1>
+    <p class="mt-1 max-w-prose text-pretty">A demo of the Apple Hardware Bridge Component for Hotwire Native.</p>
+  </header>
+
+  <main class="duo-spread">
+    <section aria-labelledby="about-title" class="duo-right-page rounded-2xl bg-white dark:bg-stone-800 p-4 ring-1 ring-stone-300 dark:ring-stone-700">
+      <h2 id="about-title" class="text-lg font-semibold">What the pages show</h2>
+      <ul class="mt-2 list-disc pl-5 space-y-1">
+        <li>The device: its model, its name and whether it is a phone or an iPad</li>
+        <li>The safe area, and what covers the screen, such as the Dynamic Island</li>
+        <li>On the iPhone Duo: the two screens, the hinge and the fold</li>
+      </ul>
+      <p class="mt-3 text-sm text-stone-600 dark:text-stone-300">Around the pages the app uses standard iOS navigation: a navigation bar, tabs and a + button.</p>
+    </section>
+  </main>
+
+  <footer class="mt-10 duo-left-page text-center text-sm text-balance text-stone-600 dark:text-stone-300">
+    Makers of
+    <a href="https://cammi.app" rel="noopener" class="inline-block py-3 font-semibold text-stone-900 underline decoration-stone-400 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-stone-100 dark:decoration-stone-500">Cammi – Build a kinder voice</a>
+    and
+    <a href="https://motivationquiz.fun" rel="noopener" class="inline-block py-3 font-semibold text-stone-900 underline decoration-stone-400 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-stone-100 dark:decoration-stone-500">The Motivation Quiz</a>.
+  </footer>
+</body>
+</html>

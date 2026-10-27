@@ -1,0 +1,26 @@
+{
+  "name": "iphone-duo-demo-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i src/app.css -o public/app.css",
+    "build:js": "esbuild src/app.js --bundle --format=esm --preserve-symlinks --outfile=public/app.js",
+    "build": "npm run build:css && npm run build:js",
+    "start": "npm run build && python3 -m http.server 4321 --directory public",
+    "check:overflow": "node bin/check-overflow.mjs",
+    "check:fold": "node bin/check-overflow.mjs --fold",
+    "check:shift": "node bin/check-overflow.mjs --shift"
+  },
+  "dependencies": {
+    "@cammi-technology/apple-hardware-bridge-component": "file:../..",
+    "@hotwired/hotwire-native-bridge": "^1.2.0",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo": "^8.0.23",
+    "@joemasilotti/bridge-components": "^0.13.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "esbuild": "^0.25.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

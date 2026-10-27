@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Features</title>
+  <link rel="stylesheet" href="app.css">
+  <script type="module" src="app.js"></script>
+</head>
+
+<body data-controller="bridge--device panes checks foldable"
+      data-action="bridge--device:change->foldable#render"
+      class="group/device min-h-screen bg-stone-100 dark:bg-stone-900 native:bg-transparent safe-padding font-sans text-stone-900 dark:text-stone-100">
+
+  <header class="mb-4 duo-left-page">
+    <!-- The navigation bar shows the title in the app. -->
+    <h1 class="text-2xl font-bold native:sr-only">Features</h1>
+    <p class="mt-1 max-w-prose text-pretty duo-outer:hidden">What the device component tells a page about the hardware it runs on. Open a feature to see its live values.</p>
+  </header>
+
+  <!-- In the app this becomes the native "…" menu in the navigation bar:
+       on a narrow screen the other pane first, then the hardware cards,
+       each opening its page. On the web it is a small switch between
+       the panes, and the cards themselves are the links. -->
+  <div data-panes-target="menu" class="mb-4 flex flex-wrap items-center gap-3 text-sm duo-inner:hidden duo-outer:hidden">
+    <div role="group" aria-label="Show" class="inline-flex rounded-full p-1 ring-1 ring-stone-300 dark:ring-stone-700" data-panes-target="switcher">
+      <button type="button" data-bridge-ios-image="square.text.square"
+              data-panes-target="switch" data-panes-pane-param="glance" data-action="panes#show"
+              class="min-h-11 rounded-full px-4 font-medium aria-pressed:bg-stone-900 aria-pressed:text-white dark:aria-pressed:bg-amber-200 dark:aria-pressed:text-stone-900">At a glance</button>
+      <button type="button" data-bridge-ios-image="list.bullet"
+              data-panes-target="switch" data-panes-pane-param="list" data-action="panes#show"
+              class="min-h-11 rounded-full px-4 font-medium aria-pressed:bg-stone-900 aria-pressed:text-white dark:aria-pressed:bg-amber-200 dark:aria-pressed:text-stone-900">Features</button>
+    </div>
+    <!-- The cards again, for the native menu, in the same order. The
+         menu clicks the one you pick, so it opens like a card. -->
+    <nav hidden aria-label="Features">
+      <a href="device.html" data-panes-target="card" data-bridge-ios-image="iphone">Device information</a>
+      <a href="safe-areas.html" data-panes-target="card" data-bridge-ios-image="rectangle.inset.filled">Safe areas</a>
+      <a href="posture.html" data-panes-target="card" data-foldable-only data-bridge-ios-image="book">Posture and hinge</a>
+      <a href="dynamic-island.html" data-panes-target="card" data-bridge-ios-image="capsule">Dynamic Island</a>
+    </nav>
+  </div>
+
+  <!-- Two panes. Where only one fits (an iPhone, the Duo's cover screen,
+       a narrow window) the panes controller shows one at a time, and the
+       menu switches them. Where both fit (the Duo open, an iPad, a wide
+       window) both show: the list on the left, the glance on the right,
+       with the fold in the gap between them in book mode (duo-spread).
+       On the inner screen held upright, the glance goes full width on
+       top, and the list goes below it. -->
+  <div class="grid grid-cols-1 gap-4
+              md:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] duo-inner:grid-cols-2 duo-spread
+              duo-inner-portrait:grid-cols-1">
+
+  <main id="pane-list" data-pane="list" data-panes-target="pane" aria-label="Features" class="min-w-0">
+
+
+    <section aria-labelledby="hardware-title">
+      <h2 id="hardware-title" class="mb-2 text-lg font-semibold">From the hardware</h2>
+      <ul class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))]">
+      <li data-foldable-target="feature">
+        <article class="group relative h-full rounded-2xl bg-white dark:bg-stone-800 p-4 pe-11 ring-1 ring-stone-300 dark:ring-stone-700 motion-safe:transition-colors hover:ring-stone-400 dark:hover:ring-stone-500 has-[a:active]:bg-stone-50 dark:has-[a:active]:bg-stone-700 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-green-700 dark:has-[a:focus-visible]:outline-green-400">
+          <h3 class="font-semibold"><a href="device.html" class="after:absolute after:inset-0 focus-visible:outline-none">Device information</a><span class="ml-2 rounded-full bg-stone-200 dark:bg-stone-700 px-2 py-0.5 text-xs font-medium">All</span></h3>
+          <p class="mt-1 text-stone-600 dark:text-stone-300">The model, its name and whether it is a phone or an iPad.</p>
+          <ul aria-label="Components" class="mt-3 flex flex-wrap gap-1.5"
+              data-controller="components" data-components-feature-value="device"></ul>
+          <!-- A disclosure indicator: the whole card opens the feature. -->
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               class="pointer-events-none absolute end-4 top-1/2 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400 rtl:rotate-180
+                      motion-safe:transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg>
+        </article>
+      </li>
+      <li data-foldable-target="feature">
+        <article class="group relative h-full rounded-2xl bg-white dark:bg-stone-800 p-4 pe-11 ring-1 ring-stone-300 dark:ring-stone-700 motion-safe:transition-colors hover:ring-stone-400 dark:hover:ring-stone-500 has-[a:active]:bg-stone-50 dark:has-[a:active]:bg-stone-700 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-green-700 dark:has-[a:focus-visible]:outline-green-400">
+          <h3 class="font-semibold"><a href="safe-areas.html" class="after:absolute after:inset-0 focus-visible:outline-none">Safe areas</a><span class="ml-2 rounded-full bg-stone-200 dark:bg-stone-700 px-2 py-0.5 text-xs font-medium">All</span></h3>
+          <p class="mt-1 text-stone-600 dark:text-stone-300">How far in the page keeps clear of each edge.</p>
+          <ul aria-label="Components" class="mt-3 flex flex-wrap gap-1.5"
+              data-controller="components" data-components-feature-value="safe-areas"></ul>
+          <!-- A disclosure indicator: the whole card opens the feature. -->
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               class="pointer-events-none absolute end-4 top-1/2 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400 rtl:rotate-180
+                      motion-safe:transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg>
+        </article>
+      </li>
+      <li data-foldable-target="feature only">
+        <article class="group relative h-full rounded-2xl bg-white dark:bg-stone-800 p-4 pe-11 ring-1 ring-stone-300 dark:ring-stone-700 motion-safe:transition-colors hover:ring-stone-400 dark:hover:ring-stone-500 has-[a:active]:bg-stone-50 dark:has-[a:active]:bg-stone-700 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-green-700 dark:has-[a:focus-visible]:outline-green-400">
+          <h3 class="font-semibold"><a href="posture.html" class="after:absolute after:inset-0 focus-visible:outline-none">Posture and hinge</a><span class="ml-2 rounded-full bg-stone-200 dark:bg-stone-700 px-2 py-0.5 text-xs font-medium">Duo</span></h3>
+          <p class="mt-1 text-stone-600 dark:text-stone-300">Closed, open, book or laptop, and the hinge angle.</p>
+          <ul aria-label="Components" class="mt-3 flex flex-wrap gap-1.5"
+              data-controller="components" data-components-feature-value="posture"></ul>
+          <!-- A disclosure indicator: the whole card opens the feature. -->
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               class="pointer-events-none absolute end-4 top-1/2 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400 rtl:rotate-180
+                      motion-safe:transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg>
+        </article>
+      </li>
+      <li data-foldable-target="feature">
+        <article class="group relative h-full rounded-2xl bg-white dark:bg-stone-800 p-4 pe-11 ring-1 ring-stone-300 dark:ring-stone-700 motion-safe:transition-colors hover:ring-stone-400 dark:hover:ring-stone-500 has-[a:active]:bg-stone-50 dark:has-[a:active]:bg-stone-700 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-green-700 dark:has-[a:focus-visible]:outline-green-400">
+          <h3 class="font-semibold"><a href="dynamic-island.html" class="after:absolute after:inset-0 focus-visible:outline-none">Dynamic Island</a><span class="ml-2 rounded-full bg-stone-200 dark:bg-stone-700 px-2 py-0.5 text-xs font-medium">iPhone, Duo</span></h3>
+          <p class="mt-1 text-stone-600 dark:text-stone-300">The regions that cover the screen, and keeping clear of them.</p>
+          <ul aria-label="Components" class="mt-3 flex flex-wrap gap-1.5"
+              data-controller="components" data-components-feature-value="dynamic-island"></ul>
+          <!-- A disclosure indicator: the whole card opens the feature. -->
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               class="pointer-events-none absolute end-4 top-1/2 size-5 -translate-y-1/2 text-stone-500 dark:text-stone-400 rtl:rotate-180
+                      motion-safe:transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg>
+        </article>
+      </li>
+
+      </ul>
+    </section>
+
+
+    <section aria-labelledby="checks-title" class="mt-6">
+      <h2 id="checks-title" class="mb-2 text-lg font-semibold">Your checks</h2>
+      <ol class="space-y-2" data-checks-target="list">
+        <li data-checks-target="empty" class="text-stone-600 dark:text-stone-300">None yet. Log one with the add button.</li>
+      </ol>
+    </section>
+
+    <!-- On the web these are plain buttons. In the app they become the
+         round native add button with a native menu, in the side column
+         on the iPhone Duo, and these hide. -->
+    <div class="mt-4 flex flex-wrap gap-3"
+         data-controller="bridge--add-button" data-bridge-title="Add">
+      <button type="button" class="min-h-11 rounded-full bg-green-700 px-4 py-2 font-semibold text-white"
+              data-bridge--add-button-target="item" data-bridge-id="check"
+              data-bridge-ios-image="checkmark.circle"
+              data-action="checks#add">Log a check</button>
+      <button type="button" class="min-h-11 rounded-full bg-green-700 px-4 py-2 font-semibold text-white"
+              data-bridge--add-button-target="item" data-bridge-id="safe-area"
+              data-bridge-ios-image="rectangle.inset.filled"
+              data-action="checks#addSafeArea">Log the safe area</button>
+    </div>
+
+    <a hidden data-controller="bridge--toast" data-action="bridge--toast#show"
+       data-bridge-message="Check logged" data-checks-target="toast"></a>
+  </main>
+
+  <!-- The glance: a short version of the page, like a planner's day
+       view. It is the Duo's cover screen, and the first page on an
+       iPhone. -->
+  <aside id="pane-glance" aria-labelledby="glance-title" data-pane="glance" data-panes-target="pane"
+         class="duo-right-page duo-hero duo-inner-portrait:order-first duo-inner-portrait:col-span-full self-start overflow-hidden rounded-3xl bg-amber-50 text-stone-900 ring-1 ring-amber-300
+                dark:bg-stone-800 dark:text-stone-100 dark:ring-amber-200/30"
+         data-controller="live" data-action="bridge--device:change@window->live#render">
+    <header class="border-b border-amber-300/70 px-5 pt-5 pb-4 dark:border-amber-200/20">
+      <h2 id="glance-title" class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-900 dark:text-amber-200">At a glance</h2>
+      <p class="mt-2 flex flex-wrap items-baseline gap-x-2">
+        <span class="font-serif text-6xl leading-none font-semibold tabular-nums lining-nums" data-foldable-target="count">4</span>
+        <span class="font-serif text-2xl italic">features</span>
+      </p>
+      <p class="mt-3 text-sm text-stone-700 dark:text-stone-300">
+        On <span class="font-semibold text-stone-900 dark:text-stone-100" data-live-target="value" data-attr="deviceName">this device</span><span data-foldable-target="only">,
+        <span class="font-semibold text-stone-900 dark:text-stone-100" data-live-target="value" data-attr="devicePosture">-</span></span>.
+      </p>
+    </header>
+
+    <dl class="divide-y divide-amber-300/60 px-5 text-sm dark:divide-amber-200/15">
+      <div class="flex items-baseline justify-between py-2.5"><dt>Everywhere</dt><dd class="font-serif text-lg tabular-nums lining-nums">2</dd></div>
+      <div class="flex items-baseline justify-between py-2.5"><dt>iPhone Duo</dt><dd class="font-serif text-lg tabular-nums lining-nums">2</dd></div>
+      <div class="flex items-baseline justify-between py-2.5"><dt>iPhone</dt><dd class="font-serif text-lg tabular-nums lining-nums">1</dd></div>
+    </dl>
+
+    <section aria-labelledby="device-components-title" class="border-t border-amber-300/70 px-5 py-4 dark:border-amber-200/20">
+      <h3 id="device-components-title" class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-900 dark:text-amber-200">On this device</h3>
+      <ul aria-label="Components on this device" class="mt-2 flex flex-wrap gap-1.5"
+          data-controller="components" data-action="bridge--device:change@window->components#render"></ul>
+    </section>
+
+    <nav aria-label="Open a feature" class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,9rem),1fr))] gap-2 p-4 pt-3">
+      <a href="device.html" class="flex min-h-11 items-center justify-between gap-2 rounded-2xl bg-white/80 px-3 font-medium ring-1 ring-amber-300/60 dark:bg-stone-900 dark:ring-amber-200/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800 dark:focus-visible:outline-amber-200"><span class="min-w-0">Device</span><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0 text-amber-800 dark:text-amber-200 rtl:rotate-180"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></a>
+      <a href="safe-areas.html" class="flex min-h-11 items-center justify-between gap-2 rounded-2xl bg-white/80 px-3 font-medium ring-1 ring-amber-300/60 dark:bg-stone-900 dark:ring-amber-200/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800 dark:focus-visible:outline-amber-200"><span class="min-w-0">Safe areas</span><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0 text-amber-800 dark:text-amber-200 rtl:rotate-180"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></a>
+      <a href="posture.html" data-foldable-target="only" class="flex min-h-11 items-center justify-between gap-2 rounded-2xl bg-white/80 px-3 font-medium ring-1 ring-amber-300/60 dark:bg-stone-900 dark:ring-amber-200/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800 dark:focus-visible:outline-amber-200"><span class="min-w-0">Posture</span><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0 text-amber-800 dark:text-amber-200 rtl:rotate-180"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></a>
+      <a href="dynamic-island.html" class="flex min-h-11 items-center justify-between gap-2 rounded-2xl bg-white/80 px-3 font-medium ring-1 ring-amber-300/60 dark:bg-stone-900 dark:ring-amber-200/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800 dark:focus-visible:outline-amber-200"><span class="min-w-0">Dynamic Island</span><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0 text-amber-800 dark:text-amber-200 rtl:rotate-180"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></a>
+      <a href="about.html" class="flex min-h-11 items-center justify-between gap-2 rounded-2xl bg-white/80 px-3 font-medium ring-1 ring-amber-300/60 dark:bg-stone-900 dark:ring-amber-200/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800 dark:focus-visible:outline-amber-200"><span class="min-w-0">About</span><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0 text-amber-800 dark:text-amber-200 rtl:rotate-180"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></a>
+    </nav>
+  </aside>
+  </div>
+</body>
+</html>
